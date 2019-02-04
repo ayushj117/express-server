@@ -1,15 +1,11 @@
 const validateConfig = {
     create: {
         id: {
-            required: false,
+            required: true,
             string: true,
             regex: /^[0-9]*$/,
             in: ["body"],
-            errorMessage: "Id is required",
-            custom: function(value) {
-                console.log("Value", value);
-                //throw { error: "Error Occurred", message: "Message", status: 400 };
-            }
+            errorMessage: "Id is required"
         },
         name: {
             required: true,
@@ -17,12 +13,22 @@ const validateConfig = {
             regex: /^[a-zA-Z0-9]*$/,
             in: ["body"],
             errorMessage: "Name is required",
-            custom: function( value) {
-                if(Array.isArray(value)) {
-                    console.log("Great!!! It is an array")
+            custom: function(value, next) {
+                if (Array.isArray(value)) {
+                    console.log("Great!!! It is an array");
                 }
-                console.log("Value");
-                //throw { error: "Error Occurred", message: "Message", status: 400 };
+                console.log("Array value", value);
+                // value.forEach(element => {
+                //     if (!this.regex.test(element)) {
+                //         return next({
+                //             error: "Not valid",
+                //             message: `${element} is not in format`,
+                //             status: 500
+                //         });
+                //     }
+                // });
+
+                // this.regex;
             }
         }
     },
@@ -38,14 +44,14 @@ const validateConfig = {
         skip: {
             required: false,
             default: 0,
-            number: true,
+            //number: true,
             in: ["query"],
             errorMessage: "Skip is invalid"
         },
         limit: {
             required: false,
             default: 10,
-            number: true,
+            //number: true,
             in: ["query"],
             errorMessage: "Limit is invalid"
         }
